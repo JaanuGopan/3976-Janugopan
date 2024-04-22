@@ -1,21 +1,44 @@
 pipeline {
     agent any
-
     stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/JaanuGopan/3976-Janugopan.git'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-react-app .'
+                // Build Docker image
+                script {
+                    docker.build("react-docker:tag")
+                }
             }
         }
+
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 my-react-app'
+                // Run Docker container
+                script {
+                    docker.image("react-docker:tag").run("-d -p 8083:8083 --name react-docker")
+                }
             }
         }
-        stage('Verify') {
+
+        stage('Verify Deployment') {
             steps {
-                sh 'sleep 10' // Wait for container to start
-                sh 'curl http://localhost:3000' // Verify app is running
+                // Verify deployment
+                sh 'curl http://localhost:8083' // Example: Use curl to check if the application is running
+            }
+        }
+    }
+
+    post {
+        always {
+            // Cleanup
+            script {
+                docker.image("react-docker:tag").stop()
+                docker.image("react-docker:tag").remove(force: true)
             }
         }
     }
