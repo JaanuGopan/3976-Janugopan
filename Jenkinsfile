@@ -9,36 +9,18 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Build Docker image
-                script {
-                    docker.build("react-docker:tag")
-                }
+                sh 'docker build -t my-react-app .'
             }
         }
-
         stage('Run Docker Container') {
             steps {
-                // Run Docker container
-                script {
-                    docker.image("react-docker:tag").run("-d -p 3000:3000 --name react-docker")
-                }
+                sh 'docker run -d -p 3000:3000 my-react-app'
             }
         }
-
-        stage('Verify Deployment') {
+        stage('Verify') {
             steps {
-                // Verify deployment
-                sh 'curl http://localhost:3000' // Example: Use curl to check if the application is running
-            }
-        }
-    }
-
-    post {
-        always {
-            // Cleanup
-            script {
-                docker.image("react-docker:tag").stop()
-                docker.image("react-docker:tag").remove(force: true)
+                sh 'sleep 10' // Wait for container to start
+                sh 'curl http://localhost:3000' // Verify app is running
             }
         }
     }
