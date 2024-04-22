@@ -20,7 +20,7 @@ pipeline {
             steps {
                 // Run Docker container
                 script {
-                    docker.image("react-docker:tag").run("-d -p 8083:8083 --name react-docker")
+                    docker.image("react-docker:tag").run("-d -p 3000:3000 --name react-docker")
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 // Verify deployment
-                sh 'curl http://localhost:8083' // Example: Use curl to check if the application is running
+                sh 'curl http://localhost:3000' // Example: Use curl to check if the application is running
             }
         }
     }
