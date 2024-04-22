@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/JaanuGopan/3976-Janugopan.git'
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t my-react-app .'
