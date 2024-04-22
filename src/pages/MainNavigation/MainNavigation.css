@@ -1,0 +1,17 @@
+.Admin-main {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+.maincontent {
+
+    flex-grow: 1; 
+    padding: 2px;
+    overflow-y: auto;
+    height: 90vh;
+    width: 100%;
+}
